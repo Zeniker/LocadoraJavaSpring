@@ -1,10 +1,10 @@
 version: '3'
 services:
   database:
-    image: mariadb
+    image: mysql:5.7
     container_name: locadora-db
     ports:
-      - "3306:3306"
+      - "33061:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 123321
       MYSQL_DATABASE: 'db'
