@@ -5,9 +5,10 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
-public class Diretor {
+public class Diretor implements Serializable {
 
     @GenericGenerator(name="diretor_gen" , strategy="increment")
     @GeneratedValue(generator="diretor_gen")

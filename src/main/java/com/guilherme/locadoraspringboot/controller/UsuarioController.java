@@ -1,6 +1,9 @@
 package com.guilherme.locadoraspringboot.controller;
 
-import com.guilherme.locadoraspringboot.dto.CriacaoUsuarioDTO;
+import com.guilherme.locadoraspringboot.dto.DefaultResponseDTO;
+import com.guilherme.locadoraspringboot.dto.usuario.CriacaoUsuarioRequestDTO;
+import com.guilherme.locadoraspringboot.service.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,9 +15,12 @@ import javax.validation.Valid;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-    @RequestMapping(value = "/criar", method = RequestMethod.POST)
-    private void criaUsuario(@Valid @RequestBody final CriacaoUsuarioDTO criacaoUsuarioDTO){
+    @Autowired
+    private UsuarioService usuarioService;
 
+    @RequestMapping(value = "/criar", method = RequestMethod.POST)
+    private DefaultResponseDTO criaUsuario(@Valid @RequestBody final CriacaoUsuarioRequestDTO criacaoUsuarioRequestDTO){
+        return usuarioService.criarUsuario(criacaoUsuarioRequestDTO);
     }
 
 }

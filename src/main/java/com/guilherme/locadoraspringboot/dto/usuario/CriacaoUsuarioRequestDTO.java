@@ -1,8 +1,8 @@
-package com.guilherme.locadoraspringboot.dto;
+package com.guilherme.locadoraspringboot.dto.usuario;
 
 import javax.validation.constraints.NotEmpty;
 
-public class CriacaoUsuarioDTO {
+public class CriacaoUsuarioRequestDTO {
 
     @NotEmpty(message = "Favor informar o nome")
     private String nome;
