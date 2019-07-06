@@ -1,49 +1,17 @@
 package com.guilherme.locadoraspringboot.dto.filme;
 
-import com.guilherme.locadoraspringboot.model.Diretor;
+import com.guilherme.locadoraspringboot.dto.DefaultResponseDTO;
 
-public class FilmesDisponiveisResponseDTO {
-    private Integer id;
-    private String titulo;
-    private String diretor;
-    private Integer quantidadeDisponivel;
+import java.util.List;
 
-    public FilmesDisponiveisResponseDTO(Integer id, String titulo, String diretor, Long quantidadeDisponivel) {
-        this.id = id;
-        this.titulo = titulo;
-        this.diretor = diretor;
-        this.quantidadeDisponivel = quantidadeDisponivel.intValue();
+public class FilmesDisponiveisResponseDTO extends DefaultResponseDTO {
+    private List<FilmeDisponivelDTO> filmeDisponiveis;
+
+    public List<FilmeDisponivelDTO> getFilmeDisponiveis() {
+        return filmeDisponiveis;
     }
 
-    public Integer getQuantidadeDisponivel() {
-        return quantidadeDisponivel;
-    }
-
-    public void setQuantidadeDisponivel(Integer quantidadeDisponivel) {
-        this.quantidadeDisponivel = quantidadeDisponivel;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getDiretor() {
-        return diretor;
-    }
-
-    public void setDiretor(String diretor) {
-        this.diretor = diretor;
+    public void setFilmeDisponiveis(List<FilmeDisponivelDTO> filmeDisponiveis) {
+        this.filmeDisponiveis = filmeDisponiveis;
     }
 }

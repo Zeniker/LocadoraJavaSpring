@@ -28,28 +28,7 @@ public class HomeController {
     @RequestMapping("/")
     @Transactional
     public String home(){
-        Diretor diretor = new Diretor();
-        diretor.setNome("Steve");
-
-        diretorRepository.save(diretor);
-
-        Filme filme = new Filme();
-        filme.setDiretor(diretor);
-        filme.setTitulo("O fim da lua");
-
-        filmeRepository.save(filme);
-
-        Copia copia = new Copia();
-        copia.setFilme(filme);
-
-        copiaRepository.save(copia);
-
-        copia = new Copia();
-        copia.setFilme(filme);
-
-        copiaRepository.save(copia);
-
-        return diretor.getNome();
+        return "Teste";
     }
 
     @RequestMapping("/d")

@@ -18,7 +18,7 @@ public class Filme {
     @NotNull
     private String titulo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @NotNull
     private Diretor diretor;
 
