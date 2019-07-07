@@ -1,5 +1,6 @@
 package com.guilherme.locadoraspringboot.service;
 
+import com.guilherme.locadoraspringboot.exception.CopiaNaoDisponivelException;
 import com.guilherme.locadoraspringboot.exception.DevolucacaoDeCopiaNaoAlugadaException;
 import com.guilherme.locadoraspringboot.model.Copia;
 import com.guilherme.locadoraspringboot.model.Locacao;
@@ -17,16 +18,24 @@ public class LocacaoService extends DefaultService {
     @Autowired
     private LocacaoRepository locacaoRepository;
 
-    public void criarLocacao(Copia copia){
+    public Locacao criarLocacao(Copia copia) throws CopiaNaoDisponivelException {
+        Optional<Locacao> locacaoOptional = locacaoRepository.findByCopiaAndAndDataDevolucaoIsNull(copia);
+
+        if(locacaoOptional.isPresent()){
+            throw new CopiaNaoDisponivelException();
+        }
+
         Locacao locacao = new Locacao();
         locacao.setCopia(copia);
         locacao.setDataLocacao(LocalDateTime.now());
         locacao.setLocador(SessionUtils.getUsuarioLogado());
 
         locacaoRepository.save(locacao);
+
+        return locacao;
     }
 
-    public void realizarDevolucao(Copia copia) throws DevolucacaoDeCopiaNaoAlugadaException {
+    public Locacao realizarDevolucao(Copia copia) throws DevolucacaoDeCopiaNaoAlugadaException {
         Optional<Locacao> locacaoOptional = locacaoRepository.findByCopiaAndAndDataDevolucaoIsNull(copia);
 
         if(!locacaoOptional.isPresent()){
@@ -37,5 +46,7 @@ public class LocacaoService extends DefaultService {
         locacao.setDataDevolucao(LocalDateTime.now());
 
         locacaoRepository.save(locacao);
+
+        return locacao;
     }
 }
