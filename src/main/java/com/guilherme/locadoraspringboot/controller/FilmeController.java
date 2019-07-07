@@ -18,7 +18,7 @@ public class FilmeController {
     @Autowired
     private FilmeService filmeService;
 
-    @RequestMapping(value = "/disponiveis")
+    @RequestMapping(value = "/disponiveis", method = RequestMethod.POST)
     public FilmesDisponiveisResponseDTO listaFilmesDisponiveis(){
         return filmeService.listarFilmesDisponiveis();
     }

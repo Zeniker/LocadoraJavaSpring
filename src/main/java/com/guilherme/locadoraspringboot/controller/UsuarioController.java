@@ -37,7 +37,7 @@ public class UsuarioController {
         return usuarioService.criarUsuario(criacaoUsuarioRequestDTO);
     }
 
-    @RequestMapping(value = "/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public void login(@Valid @RequestBody LoginRequestDTO loginRequestDTO, HttpServletRequest httpServletRequest){
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(),
                 loginRequestDTO.getSenha());
@@ -50,7 +50,7 @@ public class UsuarioController {
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, securityContext);
     }
 
-    @RequestMapping(value = "/logout")
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public void logout(HttpServletRequest httpServletRequest){
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.getAuthentication().setAuthenticated(false);
