@@ -1,4 +1,4 @@
-INSERT INTO usuario VALUES(1, 'Guilherme Lopes', 'gui.lls@hotmail.com', '123321');
+INSERT INTO usuario(id, nome, email, senha) VALUES(1, 'Guilherme Lopes', 'gui.lls@hotmail.com', '$2a$10$cVTR9CGfht.Z5MBsg0zrOeaPpPjKNRHlikPphyuPY.mj9m.KxcBpC');
 
 INSERT INTO diretor VALUES (1, 'James Cameron');
 INSERT INTO diretor VALUES (2, 'John Musker');

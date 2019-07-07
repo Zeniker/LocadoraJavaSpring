@@ -6,6 +6,7 @@ import com.guilherme.locadoraspringboot.service.FilmeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -23,17 +24,17 @@ public class FilmeController {
         return filmeService.listarFilmesDisponiveis();
     }
 
-    @RequestMapping(value = "/alugar")
+    @RequestMapping(value = "/alugar", method = RequestMethod.POST)
     public AlugarFilmeResponseDTO alugarFilme(@Valid @RequestBody AlugarFilmeRequestDTO alugarFilmeRequestDTO){
         return filmeService.alugarFilme(alugarFilmeRequestDTO);
     }
 
-    @RequestMapping(value = "/devolver")
+    @RequestMapping(value = "/devolver", method = RequestMethod.POST)
     public DefaultResponseDTO devolverFilme(@Valid @RequestBody DevolverFilmeRequestDTO devolverFilmeRequestDTO){
         return filmeService.devolverFilme(devolverFilmeRequestDTO);
     }
 
-    @RequestMapping(value = "/buscar")
+    @RequestMapping(value = "/buscar", method = RequestMethod.POST)
     public BuscaFilmeResponseDTO buscarFilme(@Valid @RequestBody BuscaFilmeRequestDTO buscaFilmeRequestDTO){
         return filmeService.buscarFilme(buscaFilmeRequestDTO);
     }
