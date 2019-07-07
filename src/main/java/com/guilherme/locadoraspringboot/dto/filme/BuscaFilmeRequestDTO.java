@@ -1,7 +1,10 @@
 package com.guilherme.locadoraspringboot.dto.filme;
 
+import javax.validation.constraints.NotNull;
+
 public class BuscaFilmeRequestDTO {
 
+    @NotNull
     private String nomeFilme;
 
     public String getNomeFilme() {
