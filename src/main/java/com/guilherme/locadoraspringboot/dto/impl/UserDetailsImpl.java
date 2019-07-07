@@ -28,10 +28,12 @@ public class UserDetailsImpl implements UserDetails {
     public int getId() {
         return usuario.getId();
     }
+
     @Override
     public String getPassword() {
         return usuario.getSenha();
     }
+
     @Override
     public String getUsername() {
         return usuario.getEmail();

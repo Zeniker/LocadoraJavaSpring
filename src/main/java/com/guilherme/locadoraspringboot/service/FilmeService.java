@@ -9,7 +9,9 @@ import com.guilherme.locadoraspringboot.repository.CopiaRepository;
 import com.guilherme.locadoraspringboot.repository.FilmeRepository;
 import com.guilherme.locadoraspringboot.repository.LocacaoRepository;
 import com.guilherme.locadoraspringboot.repository.UsuarioRepository;
+import com.guilherme.locadoraspringboot.utils.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -79,9 +81,7 @@ public class FilmeService extends DefaultService {
             Locacao locacao = new Locacao();
             locacao.setCopia(copiaLocavel);
             locacao.setDataLocacao(LocalDateTime.now());
-
-            //TODO PEGAR DO USUARIO LOGADO
-            locacao.setLocador(usuarioRepository.findById(1).get());
+            locacao.setLocador(SessionUtils.getUsuarioLogado());
 
             locacaoRepository.save(locacao);
 
