@@ -10,6 +10,8 @@ import com.guilherme.locadoraspringboot.repository.CopiaRepository;
 import com.guilherme.locadoraspringboot.repository.DiretorRepository;
 import com.guilherme.locadoraspringboot.repository.FilmeRepository;
 import com.guilherme.locadoraspringboot.repository.LocacaoRepository;
+import com.guilherme.locadoraspringboot.utils.FilmeUtils;
+import com.guilherme.locadoraspringboot.utils.LoginUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,13 +34,7 @@ import static org.junit.Assert.*;
 public class FilmeServiceTest {
 
     @Autowired
-    private LocacaoService locacaoService;
-
-    @Autowired
     private CopiaRepository copiaRepository;
-
-    @Autowired
-    private LocacaoRepository locacaoRepository;
 
     @Autowired
     private FilmeRepository filmeRepository;
@@ -54,10 +50,7 @@ public class FilmeServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
-        loginRequestDTO.setEmail("gui.lls@hotmail.com");
-        loginRequestDTO.setSenha("123321");
-        loginService.login(loginRequestDTO, new MockHttpServletRequest());
+        LoginUtils.realizaLoginPadrao(loginService);
     }
 
     @Test
@@ -70,7 +63,7 @@ public class FilmeServiceTest {
 
     @Test
     public void alugarFilme() {
-        Filme filme = criarFilme();
+        Filme filme = FilmeUtils.criarFilmeComCopia(diretorRepository, filmeRepository, copiaRepository);
         List<Copia> copia = copiaRepository.findCopiaByFilme(filme);
 
         AlugarFilmeRequestDTO requestDTO = new AlugarFilmeRequestDTO();
@@ -84,7 +77,7 @@ public class FilmeServiceTest {
 
     @Test
     public void alugarFilmeNaoDisponivel() {
-        Filme filme = criarFilme();
+        Filme filme = FilmeUtils.criarFilmeComCopia(diretorRepository, filmeRepository, copiaRepository);
 
         AlugarFilmeRequestDTO requestDTO = new AlugarFilmeRequestDTO();
         requestDTO.setIdFilme(filme.getId());
@@ -97,7 +90,7 @@ public class FilmeServiceTest {
 
     @Test
     public void devolverFilme() {
-        Filme filme = criarFilme();
+        Filme filme = FilmeUtils.criarFilmeComCopia(diretorRepository, filmeRepository, copiaRepository);
         List<Copia> copia = copiaRepository.findCopiaByFilme(filme);
 
         AlugarFilmeRequestDTO requestDTO = new AlugarFilmeRequestDTO();
@@ -115,7 +108,7 @@ public class FilmeServiceTest {
 
     @Test
     public void devolverFilmeNaoAlugado() {
-        Filme filme = criarFilme();
+        Filme filme = FilmeUtils.criarFilmeComCopia(diretorRepository, filmeRepository, copiaRepository);
         List<Copia> copia = copiaRepository.findCopiaByFilme(filme);
 
         DevolverFilmeRequestDTO devolverFilmeRequestDTO = new DevolverFilmeRequestDTO();
@@ -136,24 +129,6 @@ public class FilmeServiceTest {
         assertEquals("OK", responseDTO.getStatus());
         assertNull(responseDTO.getMensagemErro());
         assertEquals(1, responseDTO.getFilmesEncontrados().size());
-    }
-
-    @Transactional
-    protected Filme criarFilme(){
-        Optional<Diretor> diretor = diretorRepository.findById(1);
-
-        Filme filme = new Filme();
-        filme.setTitulo("Coração de dragão");
-        filme.setDiretor(diretor.get());
-
-        filmeRepository.save(filme);
-
-        Copia copia = new Copia();
-        copia.setFilme(filme);
-
-        copiaRepository.save(copia);
-
-        return filme;
     }
 
 

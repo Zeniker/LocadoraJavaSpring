@@ -4,11 +4,15 @@ import com.guilherme.locadoraspringboot.dto.usuario.LoginRequestDTO;
 import com.guilherme.locadoraspringboot.exception.CopiaNaoDisponivelException;
 import com.guilherme.locadoraspringboot.exception.DevolucacaoDeCopiaNaoAlugadaException;
 import com.guilherme.locadoraspringboot.model.Copia;
+import com.guilherme.locadoraspringboot.model.Diretor;
 import com.guilherme.locadoraspringboot.model.Filme;
 import com.guilherme.locadoraspringboot.model.Locacao;
 import com.guilherme.locadoraspringboot.repository.CopiaRepository;
+import com.guilherme.locadoraspringboot.repository.DiretorRepository;
 import com.guilherme.locadoraspringboot.repository.FilmeRepository;
 import com.guilherme.locadoraspringboot.repository.LocacaoRepository;
+import com.guilherme.locadoraspringboot.utils.CopiaUtils;
+import com.guilherme.locadoraspringboot.utils.LoginUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,17 +47,17 @@ public class LocacaoServiceTest {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private DiretorRepository diretorRepository;
+
     @Before
     public void setUp(){
-        LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
-        loginRequestDTO.setEmail("gui.lls@hotmail.com");
-        loginRequestDTO.setSenha("123321");
-        loginService.login(loginRequestDTO, new MockHttpServletRequest());
+        LoginUtils.realizaLoginPadrao(loginService);
     }
 
     @Test
     public void criarLocacaoCorreto() throws Exception{
-        Copia copia = criarNovaCopia();
+        Copia copia = CopiaUtils.criarNovaCopia(diretorRepository, filmeRepository, copiaRepository);
 
         Locacao locacao = locacaoService.criarLocacao(copia);
         Optional<Locacao> locacaoOptional = locacaoRepository.findById(locacao.getId());
@@ -65,7 +69,7 @@ public class LocacaoServiceTest {
 
     @Test(expected = CopiaNaoDisponivelException.class)
     public void criarLocacaoCorretoCopiaNaoDisponivel() throws Exception{
-        Copia copia = criarNovaCopia();
+        Copia copia = CopiaUtils.criarNovaCopia(diretorRepository, filmeRepository, copiaRepository);
 
         locacaoService.criarLocacao(copia);
         locacaoService.criarLocacao(copia);
@@ -73,7 +77,7 @@ public class LocacaoServiceTest {
 
     @Test
     public void realizarDevolucaoCorreto() throws Exception {
-        Copia copia = criarNovaCopia();
+        Copia copia = CopiaUtils.criarNovaCopia(diretorRepository, filmeRepository, copiaRepository);
 
         locacaoService.criarLocacao(copia);
         Locacao locacao = locacaoService.realizarDevolucao(copia);
@@ -82,17 +86,8 @@ public class LocacaoServiceTest {
 
     @Test(expected = DevolucacaoDeCopiaNaoAlugadaException.class)
     public void realizarDevolucaoCopiaNaoAlugada() throws Exception{
-        Copia copia = criarNovaCopia();
+        Copia copia = CopiaUtils.criarNovaCopia(diretorRepository, filmeRepository, copiaRepository);
         Locacao locacao = locacaoService.realizarDevolucao(copia);
         assertNotNull(locacao.getDataDevolucao());
-    }
-
-    @Transactional
-    protected Copia criarNovaCopia(){
-        Optional<Filme> filme = filmeRepository.findById(1);
-        Copia copia = new Copia();
-        copia.setFilme(filme.get());
-        copiaRepository.save(copia);
-        return copia;
     }
 }
