@@ -2,6 +2,7 @@ package com.guilherme.locadoraspringboot.service;
 
 import com.guilherme.locadoraspringboot.dto.DefaultResponseDTO;
 import com.guilherme.locadoraspringboot.dto.usuario.CriacaoUsuarioRequestDTO;
+import com.guilherme.locadoraspringboot.exception.UsuarioEmailJaCadastrado;
 import com.guilherme.locadoraspringboot.model.Usuario;
 import com.guilherme.locadoraspringboot.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class UsuarioService extends DefaultService{
             Usuario usuario = usuarioRepository.getUsuarioByEmail(criacaoUsuarioRequestDTO.getEmail());
 
             if(usuario != null){
-                throw new Exception("Nome de usuário já existe");
+                throw new UsuarioEmailJaCadastrado();
             }
 
             usuario = new Usuario();
