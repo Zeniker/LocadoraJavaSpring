@@ -1,8 +1,7 @@
 package com.guilherme.locadoraspringboot.service;
 
-import com.guilherme.locadoraspringboot.dto.filme.AlugarFilmeRequestDTO;
-import com.guilherme.locadoraspringboot.dto.filme.AlugarFilmeResponseDTO;
-import com.guilherme.locadoraspringboot.dto.filme.FilmesDisponiveisResponseDTO;
+import com.guilherme.locadoraspringboot.dto.DefaultResponseDTO;
+import com.guilherme.locadoraspringboot.dto.filme.*;
 import com.guilherme.locadoraspringboot.dto.usuario.LoginRequestDTO;
 import com.guilherme.locadoraspringboot.model.Copia;
 import com.guilherme.locadoraspringboot.model.Diretor;
@@ -84,11 +83,59 @@ public class FilmeServiceTest {
     }
 
     @Test
+    public void alugarFilmeNaoDisponivel() {
+        Filme filme = criarFilme();
+
+        AlugarFilmeRequestDTO requestDTO = new AlugarFilmeRequestDTO();
+        requestDTO.setIdFilme(filme.getId());
+        filmeService.alugarFilme(requestDTO);
+        AlugarFilmeResponseDTO responseDTO = filmeService.alugarFilme(requestDTO);
+
+        assertEquals("ERRO", responseDTO.getStatus());
+        assertEquals("Nenhuma cópia deste filme está disponível", responseDTO.getMensagemErro());
+    }
+
+    @Test
     public void devolverFilme() {
+        Filme filme = criarFilme();
+        List<Copia> copia = copiaRepository.findCopiaByFilme(filme);
+
+        AlugarFilmeRequestDTO requestDTO = new AlugarFilmeRequestDTO();
+        requestDTO.setIdFilme(filme.getId());
+        filmeService.alugarFilme(requestDTO);
+
+        DevolverFilmeRequestDTO devolverFilmeRequestDTO = new DevolverFilmeRequestDTO();
+        devolverFilmeRequestDTO.setIdCopia(copia.get(0).getId());
+
+        DefaultResponseDTO responseDTO = filmeService.devolverFilme(devolverFilmeRequestDTO);
+
+        assertEquals("OK", responseDTO.getStatus());
+        assertNull(responseDTO.getMensagemErro());
+    }
+
+    @Test
+    public void devolverFilmeNaoAlugado() {
+        Filme filme = criarFilme();
+        List<Copia> copia = copiaRepository.findCopiaByFilme(filme);
+
+        DevolverFilmeRequestDTO devolverFilmeRequestDTO = new DevolverFilmeRequestDTO();
+        devolverFilmeRequestDTO.setIdCopia(copia.get(0).getId());
+
+        DefaultResponseDTO responseDTO = filmeService.devolverFilme(devolverFilmeRequestDTO);
+
+        assertEquals("ERRO", responseDTO.getStatus());
+        assertEquals("Esta cópia não está alugada, não é possível realizar devolução", responseDTO.getMensagemErro());
     }
 
     @Test
     public void buscarFilme() {
+        BuscaFilmeRequestDTO buscaFilmeRequestDTO = new BuscaFilmeRequestDTO();
+        buscaFilmeRequestDTO.setNomeFilme("moan");
+
+        BuscaFilmeResponseDTO responseDTO = filmeService.buscarFilme(buscaFilmeRequestDTO);
+        assertEquals("OK", responseDTO.getStatus());
+        assertNull(responseDTO.getMensagemErro());
+        assertEquals(1, responseDTO.getFilmesEncontrados().size());
     }
 
     @Transactional
