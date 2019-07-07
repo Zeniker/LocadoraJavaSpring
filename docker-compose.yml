@@ -4,9 +4,24 @@ services:
     image: mysql:5.7
     container_name: locadora-db
     ports:
-      - "33061:3306"
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 123321
       MYSQL_DATABASE: 'db'
       MYSQL_USER: usuario
       MYSQL_PASSWORD: 123321
+    networks:
+          - rede
+  tomcat:
+    build:
+      context: .
+    container_name: locadora-server
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - rede
+networks:
+    rede:
+        driver: bridge
