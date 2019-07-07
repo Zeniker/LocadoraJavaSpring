@@ -5,13 +5,13 @@ import com.guilherme.locadoraspringboot.dto.DefaultResponseDTO;
 import java.util.List;
 
 public class FilmesDisponiveisResponseDTO extends DefaultResponseDTO {
-    private List<FilmeDisponivelDTO> filmeDisponiveis;
+    private List<FilmeDisponivelDTO> filmesDisponiveis;
 
-    public List<FilmeDisponivelDTO> getFilmeDisponiveis() {
-        return filmeDisponiveis;
+    public List<FilmeDisponivelDTO> getFilmesDisponiveis() {
+        return filmesDisponiveis;
     }
 
-    public void setFilmeDisponiveis(List<FilmeDisponivelDTO> filmeDisponiveis) {
-        this.filmeDisponiveis = filmeDisponiveis;
+    public void setFilmesDisponiveis(List<FilmeDisponivelDTO> filmesDisponiveis) {
+        this.filmesDisponiveis = filmesDisponiveis;
     }
 }

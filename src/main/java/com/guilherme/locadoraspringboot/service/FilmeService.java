@@ -44,7 +44,7 @@ public class FilmeService extends DefaultService {
         FilmesDisponiveisResponseDTO responseDTO = new FilmesDisponiveisResponseDTO();
 
         try{
-            responseDTO.setFilmeDisponiveis(filmeRepository.listarDisponiveis());
+            responseDTO.setFilmesDisponiveis(filmeRepository.listarDisponiveis());
             marcaRetornoOK(responseDTO);
         }catch (Exception e){
             marcaErroNoRetorno(responseDTO, e.getMessage());
