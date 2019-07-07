@@ -20,3 +20,4 @@ INSERT INTO copia VALUES(6, 5);
 INSERT INTO copia VALUES(7, 5);
 
 INSERT INTO locacao(id, copia_id, locador_id, data_locacao, data_devolucao) VALUES(1, 7, 1, now(), null);
+INSERT INTO locacao(id, copia_id, locador_id, data_locacao, data_devolucao) VALUES(2, 6, 1, now(), null);
