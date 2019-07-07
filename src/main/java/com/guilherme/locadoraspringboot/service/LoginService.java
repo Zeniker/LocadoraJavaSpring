@@ -2,6 +2,7 @@ package com.guilherme.locadoraspringboot.service;
 
 import com.guilherme.locadoraspringboot.dto.DefaultResponseDTO;
 import com.guilherme.locadoraspringboot.dto.usuario.LoginRequestDTO;
+import com.guilherme.locadoraspringboot.exception.UsuarioNaoAutenticado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -51,6 +52,10 @@ public class LoginService extends DefaultService {
 
         try{
             SecurityContext securityContext = SecurityContextHolder.getContext();
+
+            if(securityContext.getAuthentication() == null){
+                throw new UsuarioNaoAutenticado();
+            }
             securityContext.getAuthentication().setAuthenticated(false);
 
             HttpSession session = httpServletRequest.getSession();
